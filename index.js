@@ -7,9 +7,11 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-    io.emit('joining', 'Someone has joined.');
-    socket.on('chat message', function(msg){
-        io.emit('chat message', msg);
+    socket.on('join', function(name){
+        io.emit('joining', name + ' has joined.');
+    });
+    socket.on('chat message', function(data){
+        io.emit('chat message', data.name + ': ' + data.msg);
     });
     socket.on('disconnect', function(){
         io.emit('leaving', 'Someone has left.');
