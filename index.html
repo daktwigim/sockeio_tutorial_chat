@@ -60,7 +60,7 @@
                 $('#messages').append($('<li style="color:rgb(50, 90, 256)">').text(msg));
             });
             socket.on('leaving', function(msg){
-                $('#messages').append($('<li>').text(msg));
+                $('#messages').append($('<li style="color:rgb(256, 90, 50)">').text(msg));
             });
         </script>
     </body>
