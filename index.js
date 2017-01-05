@@ -11,7 +11,7 @@ io.on('connection', function(socket){
         io.emit('joining', name + ' has joined.');
     });
     socket.on('chat message', function(data){
-        io.emit('chat message', data.name + ': ' + data.msg);
+        socket.broadcast.emit('chat message', data.name + ': ' + data.msg);
     });
     socket.on('disconnect', function(){
         io.emit('leaving', 'Someone has left.');

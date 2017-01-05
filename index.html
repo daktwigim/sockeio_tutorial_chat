@@ -48,6 +48,8 @@
             // 입력 받은 메시지 서버로 송신
             $('form.chat').submit(function(e){
                 socket.emit('chat message', {name: name, msg: $('#m').val()});
+                // 입력 받은 메시지 표시
+                $('#messages').append($('<li style="color:rgb(0,90,90)">').text(name + ": " + $('#m').val()));
                 $('#m').val('');
                 return false;
             });
