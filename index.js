@@ -13,6 +13,12 @@ io.on('connection', function(socket){
     socket.on('chat message', function(data){
         socket.broadcast.emit('chat message', data.name + ': ' + data.msg);
     });
+    socket.on('on typing', function(data){
+        socket.broadcast.emit('on typing', data.name);
+    });
+    socket.on('off typing', function(data){
+        socket.broadcast.emit('off typing');
+    });
     socket.on('disconnect', function(){
         io.emit('leaving', 'Someone has left.');
     });
