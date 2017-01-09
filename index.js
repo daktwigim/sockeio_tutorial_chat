@@ -6,9 +6,12 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
+var list = [];
 io.on('connection', function(socket){
+    io.emit('refresh', list);
     socket.on('join', function(name){
-        io.emit('joining', name + ' has joined.');
+        list.push({ "id": socket.id, "name": name });
+        io.emit('joining', { "list": list, "msg": name + ' has joined.' });
     });
     socket.on('chat message', function(data){
         socket.broadcast.emit('chat message', data.name + ': ' + data.msg);
@@ -20,7 +23,15 @@ io.on('connection', function(socket){
         socket.broadcast.emit('off typing');
     });
     socket.on('disconnect', function(){
-        io.emit('leaving', 'Someone has left.');
+        var target, leaver;
+        list.forEach(function(item, index){
+            if ( item.id === socket.id ) {
+                target = index;
+                leaver = item.name;
+            }
+        });
+        list.splice(target, 1);
+        io.emit('leaving', { "list": list, "msg": leaver + ' has left.' });
     });
 });
 

@@ -37,7 +37,7 @@
             </div
             ><div class="usr_window">
                 <h1>online user</h1>
-                <ul></ul>
+                <ul id="user_list"></ul>
             </div>
         </div>
         <form class="chat" action="">
@@ -81,14 +81,32 @@
             });
 
             // 서버로 부터 메시지 수신
+            socket.on('refresh', function(data){
+                var list = data;
+                $('#user_list').empty();
+                list.forEach(function(item, index){
+                    $('#user_list').append('<li>'+item.name+'</li>');
+                });
+            });
             socket.on('chat message', function(msg){
                 $('#messages').append($('<li>').text(msg));
             });
             socket.on('joining', function(alarm){
-                $('#messages').append($('<li style="color:rgb(50, 90, 256)">').text(alarm));
+                $('#messages').append($('<li style="color:rgb(50, 90, 256)">').text(alarm.msg));
+                var list = alarm.list;
+                $('#user_list').empty();
+                list.forEach(function(item, index){
+                    $('#user_list').append('<li>'+item.name+'</li>');
+                });
             });
+
             socket.on('leaving', function(alarm){
-                $('#messages').append($('<li style="color:rgb(256, 90, 50)">').text(alarm));
+                $('#messages').append($('<li style="color:rgb(256, 90, 50)">').text(alarm.msg));
+                var list = alarm.list;
+                $('#user_list').empty();
+                list.forEach(function(item, index){
+                    $('#user_list').append('<li>'+item.name+'</li>');
+                });
             });
             socket.on('on typing', function(status){
                 $('div.status').text(status + ' is typing...');
