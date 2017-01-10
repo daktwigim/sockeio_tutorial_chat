@@ -30,8 +30,10 @@ io.on('connection', function(socket){
                 leaver = item.name;
             }
         });
-        list.splice(target, 1);
-        io.emit('leaving', { "list": list, "msg": leaver + ' has left.' });
+        if (target) {
+            list.splice(target, 1);
+            io.emit('leaving', { "list": list, "msg": leaver + ' has left.' });
+        }
     });
 });
 

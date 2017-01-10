@@ -68,7 +68,7 @@
             $('form.chat').submit(function(e){
                 socket.emit('chat message', {name: name, msg: $('#m').val()});
                 // 입력 받은 메시지 표시
-                $('#messages').append($('<li style="color:rgb(0,90,90)">').text(name + ": " + $('#m').val()));
+                $('#messages').append($('<li style="color:rgb(30, 50, 100)">').text(name + ": " + $('#m').val()));
                 $('#m').val('');
                 return false;
             });
@@ -85,7 +85,11 @@
                 var list = data;
                 $('#user_list').empty();
                 list.forEach(function(item, index){
-                    $('#user_list').append('<li>'+item.name+'</li>');
+                    if(socket.id === item.id) {
+                        $('#user_list').append('<li style="color:rgb(30, 50, 100)">'+item.name+'(나)</li>');
+                    }else {
+                        $('#user_list').append('<li>'+item.name+'</li>');
+                    }
                 });
             });
             socket.on('chat message', function(msg){
@@ -96,7 +100,11 @@
                 var list = alarm.list;
                 $('#user_list').empty();
                 list.forEach(function(item, index){
-                    $('#user_list').append('<li>'+item.name+'</li>');
+                    if(socket.id === item.id) {
+                        $('#user_list').append('<li style="color:rgb(30, 50, 100)">'+item.name+'(나)</li>');
+                    }else {
+                        $('#user_list').append('<li>'+item.name+'</li>');
+                    }
                 });
             });
 
@@ -105,7 +113,11 @@
                 var list = alarm.list;
                 $('#user_list').empty();
                 list.forEach(function(item, index){
-                    $('#user_list').append('<li>'+item.name+'</li>');
+                    if(socket.id === item.id) {
+                        $('#user_list').append('<li style="color:rgb(30, 50, 100)">'+item.name+'(나)</li>');
+                    }else {
+                        $('#user_list').append('<li>'+item.name+'</li>');
+                    }
                 });
             });
             socket.on('on typing', function(status){
