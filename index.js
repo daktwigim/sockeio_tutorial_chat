@@ -22,18 +22,29 @@ io.on('connection', function(socket){
     socket.on('off typing', function(data){
         socket.broadcast.emit('off typing');
     });
+
+    socket.on('change nick', function(name){
+        var target, changer;
+        list.forEach(function(item, index){
+            if ( item.id === socket.id ) {
+                target = index;
+                changer = item.name;
+                item.name = name;
+                io.emit('changing nick', { "list": list, "msg": changer + ' has changed name to ' + name });
+            }
+        });
+    });
+
     socket.on('disconnect', function(){
         var target, leaver;
         list.forEach(function(item, index){
             if ( item.id === socket.id ) {
                 target = index;
                 leaver = item.name;
+                list.splice(target, 1);
+                io.emit('leaving', { "list": list, "msg": leaver + ' has left.' });
             }
         });
-        if (target) {
-            list.splice(target, 1);
-            io.emit('leaving', { "list": list, "msg": leaver + ' has left.' });
-        }
     });
 });
 
