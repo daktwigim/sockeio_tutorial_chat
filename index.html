@@ -15,8 +15,8 @@
             form.chat input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
             form.chat button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
             #messages { list-style-type: none; margin: 0; padding: 0; }
-            #messages li { padding: 5px 10px; }
-            #messages li:nth-child(odd) { background: #eee; }
+            #messages li { padding: 5px 10px; border-bottom: 1px solid #aaa}
+            /*#messages li:nth-child(odd) { background: #eee; }*/
 
             div.status { position: fixed; color: #aaa; bottom: 55px; width: 100%;}
 
@@ -89,13 +89,13 @@
                 $('#messages').append($('<li>').text(msg));
             });
             socket.on('joining', function(alarm){
-                $('#messages').append($('<li style="color:rgb(50, 90, 256)">').text(alarm.msg));
+                $('#messages').append($('<li style="background-color: rgb(200, 200, 256); color:rgb(50, 90, 256)">').text(alarm.msg));
                 var list = alarm.list;
                 getList(list);
             });
 
             socket.on('leaving', function(alarm){
-                $('#messages').append($('<li style="color:rgb(256, 90, 50)">').text(alarm.msg));
+                $('#messages').append($('<li style="background-color: rgb(256, 200, 200); color:rgb(256, 90, 50)">').text(alarm.msg));
                 var list = alarm.list;
                 getList(list);
             });
@@ -107,7 +107,7 @@
             });
 
             socket.on('changing nick', function(data){
-                $('#messages').append($('<li style="color:rgb(50, 90, 256)">').text(data.msg));
+                $('#messages').append($('<li style="background-color: rgb(200, 200, 256); color:rgb(50, 90, 256)">').text(data.msg));
                 var list = data.list;
                 getList(list);
             });
@@ -120,7 +120,7 @@
                 $('#user_list').empty();
                 target.forEach(function(item, index){
                     if(socket.id === item.id) {
-                        $('#user_list').append('<li id="'+item.id+'" style="color:rgb(30, 50, 100)">'+item.name+'(나)</li>');
+                        $('#user_list').append('<li id="'+item.id+'" style="background-color: rgb(200, 200, 200); color:rgb(30, 50, 100)">'+item.name+'(나)</li>');
                     }else {
                         $('#user_list').append('<li id="'+item.id+'">'+item.name+'</li>');
                     }
