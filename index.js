@@ -8,10 +8,12 @@ app.get('/', function(req, res){
 
 var list = [];
 io.on('connection', function(socket){
+    console.log(Date()+':'+socket.id+' has connected');
     io.emit('refresh', list);
     socket.on('join', function(name){
         list.push({ "id": socket.id, "name": name });
         io.emit('joining', { "list": list, "msg": name + ' has joined.' });
+        console.log(Date()+':'+name+'('+socket.id+') has joined to the channel');
     });
     socket.on('chat message', function(data){
         socket.broadcast.emit('chat message', data.name + ': ' + data.msg);
@@ -30,7 +32,7 @@ io.on('connection', function(socket){
                 target = index;
                 changer = item.name;
                 item.name = name;
-                io.emit('changing nick', { "list": list, "msg": changer + ' has changed name to ' + name });
+                io.emit('changing nick', { "list": list, "msg": changer + ' has changed his name to ' + name });
             }
         });
     });
@@ -45,6 +47,7 @@ io.on('connection', function(socket){
                 io.emit('leaving', { "list": list, "msg": leaver + ' has left.' });
             }
         });
+        console.log(Date()+':'+socket.id+' has disconnected');
     });
 });
 
